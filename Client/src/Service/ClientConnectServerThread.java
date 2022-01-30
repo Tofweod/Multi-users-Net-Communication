@@ -1,9 +1,12 @@
 package Service;
 
 
+import Common.File;
 import Common.Message;
 import Common.MessageType;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
@@ -58,6 +61,13 @@ public class ClientConnectServerThread extends Thread{
                 }
                 else if (message.getMessageType().equals(MessageType.MESSAGE_TO_ALL_MES)) {
                     System.out.println(message.getContent());
+                }
+                else if (message.getMessageType().equals(MessageType.MESSAGE_FILE_MES)) {
+                    File fileMessage = (File) message;
+                    System.out.println(fileMessage.getSender() + "向你发送了文件在：" + fileMessage.getDest());
+                    FileOutputStream fos = new FileOutputStream(fileMessage.getDest());
+                    fos.write(fileMessage.getFileBytes());
+                    fos.close();
                 }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();

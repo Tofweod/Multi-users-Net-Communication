@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @PsnStudy
  * @Goal
  */
-public class File implements Serializable {
+public class File extends Message implements Serializable {
     @Serial
     private final static long serialVersionUID = 1L;
 

@@ -1,5 +1,6 @@
 package Service;
 
+import Common.File;
 import Common.Message;
 import Common.MessageType;
 
@@ -34,7 +35,7 @@ public class ServerConnectedClientThread extends Thread{
 
 
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-                Message mg = (Message) ois.readObject();
+                Message mg = (Message)ois.readObject();
 
                 // 返回message
                 Message retMessage = new Message();
@@ -91,6 +92,13 @@ public class ServerConnectedClientThread extends Thread{
                             oos.writeObject(mg);
                         }
                     }
+                }
+                // 发文件
+                else if (mg.getMessageType().equals(MessageType.MESSAGE_FILE_MES)) {
+                    File file = (File)mg;
+                    System.out.println(file.getSender() + "向" + file.getGetter() + "发送文件");
+                    ObjectOutputStream oos = new ObjectOutputStream(ManageThread.getThread(file.getGetter()).socket.getOutputStream());
+                    oos.writeObject(file);
                 }
 
 

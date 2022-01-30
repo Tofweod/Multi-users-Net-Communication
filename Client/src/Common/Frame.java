@@ -1,7 +1,10 @@
 package Common;
 
+import Service.FileClientService;
 import Service.MessageClientService;
 import Service.UserClientService;
+import Utils.Utility;
+
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -34,9 +37,9 @@ public class Frame {
       switch (key) {
         case "1" :
           System.out.print("请输入用户号：");
-          String userId = scanner.next();
+          String userId = Utility.readString(10);
           System.out.print("请输入密 码：");
-          String pwd = scanner.next();
+          String pwd = Utility.readString(10);
           // 到服务端验证该用户是否合法
           try {
             if (ucs.checkUser(userId,pwd)) {
@@ -59,24 +62,27 @@ public class Frame {
                     break;
                   case "2":
                     System.out.print("请输入想说的话：");
-                    // 吞回车
-                    scanner.nextLine();
-                    String plcContent = scanner.nextLine();
+
+                    String plcContent = Utility.readString(50);
                     mcs.sendInfoToAll(plcContent);
                     break;
                   case "3":
                     System.out.print("请输入想聊天的·用户号（在线）：");
-                    String getter = scanner.next();
-
-                    // nextLine吞回车
-                    scanner.nextLine();
+                    String getter = Utility.readString(10);
 
                     System.out.print("请输入想说的话：");
-                    String prvContent = scanner.nextLine();
+                    String prvContent = Utility.readString(50);
                     mcs.sendPrivateInfo(getter,prvContent);
                     break;
                   case "4":
-                    System.out.println("\t\t 4 发送文件");
+                    FileClientService fcs = new FileClientService();
+                    System.out.print("请输入传输文件路径：");
+                    String srcPath = Utility.readString(50);
+                    System.out.print("请输入接收文件用户：");
+                    String fileGetter = Utility.readString(10);
+                    System.out.print("请输入发送文件到对方的路径：");
+                    String destPath = Utility.readString(50);
+                    fcs.sendFile(userId,srcPath,fileGetter,destPath);
                     break;
                   case "9":
                     ucs.Exit();
